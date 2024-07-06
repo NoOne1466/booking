@@ -10,7 +10,8 @@ const factory = require("./../_common/handlerFactory");
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
 
-// Do NOT update passwords with this!
+// asdasd
+// Do NOT update passwords with this!\
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
 exports.createUser = factory.createOne(User);
