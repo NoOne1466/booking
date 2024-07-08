@@ -9,7 +9,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-const app = require(`./src/app/app.js`);
+const app = require(`./app.js`);
 
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
