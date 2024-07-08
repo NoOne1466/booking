@@ -9,7 +9,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-const app = require(`./app.js`);
+const app = require(`./src/app/app.js`);
 
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
@@ -19,7 +19,6 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-
     serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
   })

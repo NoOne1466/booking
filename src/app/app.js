@@ -8,7 +8,7 @@ const xss = require("xss-clean");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const path = require("path");
-const AppError = require("./src/app/utils/appError");
+const AppError = require("./utils/appError");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
@@ -97,15 +97,15 @@ app.head("/check", (req, res) => {
   res.status(200).send();
 });
 
-const userRouter = require("./src/app/user/user.routes");
-const hotelsRouter = require("./src/app/hotels/hotels.routes");
-const bookingRouter = require("./src/app/bookingRoom/bookingRoom.routes");
+const userRouter = require("./user/user.routes");
+const hotelsRouter = require("./hotels/hotels.routes");
+const bookingRouter = require("./bookingRoom/bookingRoom.routes");
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/booking", bookingRouter);
 
-const updateRoomAvailability = require("./src/app/services/cron");
+const updateRoomAvailability = require("./services/cron");
 updateRoomAvailability();
 
 app.all("*", (req, res, next) => {
