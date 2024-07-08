@@ -6,23 +6,22 @@ const orderRoomSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  doctor: {
+  hotel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Doctor",
+    ref: "Hotel",
     required: true,
   },
-  hospital: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hospital",
+  roomType: {
+    type: String,
     required: true,
   },
   priceInCents: { type: Number, required: true },
   isPaid: { type: Boolean, required: true, default: false },
-  startTime: {
+  startDate: {
     type: Date,
     required: true,
   },
-  endTime: {
+  endDate: {
     type: Date,
     required: true,
   },
