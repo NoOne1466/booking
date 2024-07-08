@@ -98,7 +98,16 @@ app.head("/check", (req, res) => {
 });
 
 const userRouter = require("./user/user.routes");
+const hotelsRouter = require("./hotels/hotels.routes");
+const bookingRouter = require("./bookingRoom/bookingRoom.routes");
+
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/hotels", hotelsRouter);
+app.use("/api/v1/booking", bookingRouter);
+
+const updateRoomAvailability = require("./services/cron");
+updateRoomAvailability();
+
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

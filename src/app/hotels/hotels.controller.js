@@ -1,8 +1,8 @@
-const Hotels = require("./hotels.schema");
+const Hotel = require("./hotels.schema.js");
 const factory = require("./../_common/handlerFactory");
 
-exports.getHotel = factory.getOne(Hotels);
-exports.getAllHotelss = factory.getAll(Hotels);
-exports.updateHotels = factory.updateOne(Hotels);
-exports.deleteHotels = factory.deleteOne(Hotels);
-exports.createHotels = factory.createOne(Hotels);
+exports.getHotel = factory.getOne(Hotel);
+exports.getAllHotels = factory.getAll(Hotel);
+exports.updateHotels = factory.updateOne(Hotel);
+exports.deleteHotels = factory.deleteOne(Hotel);
+exports.createHotels = factory.createOne(Hotel);

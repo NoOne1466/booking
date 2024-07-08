@@ -19,13 +19,13 @@ const getUser = async (id, req) => {
     req.user = user;
     return user;
   }
-  user = await Doctor.findById(id);
-  // console.log(user);
-  if (user) {
-    req.userModel = "Doctor";
-    req.doctor = user;
-    return user;
-  }
+  // user = await Doctor.findById(id);
+  // // console.log(user);
+  // if (user) {
+  //   req.userModel = "Doctor";
+  //   req.doctor = user;
+  //   return user;
+  // }
 
   user = await Admin.findById(id);
   // console.log(user);

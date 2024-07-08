@@ -3,6 +3,9 @@ const User = require("./user.schema");
 const userController = require("./user.controller");
 const authController = require("./../midllewares/authController");
 const router = express.Router();
+const factory = require("./../_common/handlerFactory");
+
+router.get("/", userController.getAllUsers);
 
 router.post("/signup", authController.signup(User));
 router.post("/login", authController.login(User));
@@ -10,12 +13,7 @@ router.post("/forgotPassword", authController.forgotPassword(User));
 router.patch("/resetPassword", authController.resetPassword(User));
 
 router.use(authController.protect);
-router.get(
-  "/me",
-  authController.restrictTo("Doctor"),
-  userController.getMe,
-  userController.getUser
-);
+router.get("/me", userController.getMe, userController.getUser);
 router.patch("/updateMyPassword", authController.updatePassword(User));
 router.patch("/udpateMe", factory.uploadPhoto, userController.updateMe);
 router.delete("/deleteMe", userController.deleteMe);

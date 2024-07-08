@@ -1,7 +1,7 @@
 const express = require("express");
-const Hotels = require("./Hotels.schema");
-const userController = require("./user.controller");
-const authController = require("./../midllewares/authController");
+const hotelController = require("./hotels.controller");
+// const userController = require("./user.controller");
+// const authController = require("./../midllewares/authController");
 
 const router = express.Router();
 

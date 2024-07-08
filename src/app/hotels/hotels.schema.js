@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
-const roomTypeSchema = new Schema({
+const roomTypeSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
@@ -40,6 +40,6 @@ const hotelsSchema = new mongoose.Schema(
   }
 );
 
-const Hotels = mongoose.model("Hotels", hotelsSchema);
+const Hotel = mongoose.model("Hotel", hotelsSchema);
 
-module.exports = Hotels;
+module.exports = Hotel;

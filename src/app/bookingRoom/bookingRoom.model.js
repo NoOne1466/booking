@@ -1,6 +1,9 @@
+const cron = require("node-cron");
 const Hotels = require("./../hotels/hotels.schema");
 const AppError = require("./../utils/appError");
 const Booking = require("./bookingRoom.schema");
+const catchAsync = require("./../utils/catchAsync");
+
 class BookingRoom {
   static async checkAvailability(hotelId, roomType, startDate, endDate) {
     const hotel = await Hotels.findById(hotelId);
@@ -51,11 +54,8 @@ class BookingRoom {
 
     await booking.save();
 
-    await Hotels.findOneAndUpdate(
-      { _id: hotelId, "room.type": roomType },
-      { $inc: { "room.$.availableRooms": -1 } }
-    );
-
     return booking;
   }
 }
+
+module.exports = BookingRoom;

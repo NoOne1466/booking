@@ -164,11 +164,11 @@ exports.getMe = (req, res, next) => {
     // userModel;
     next();
   }
-  if (req.userModel === "Doctor") {
-    console.log(req.userModel);
-    req.params.id = req.doctor.id;
-    next();
-  }
+  // if (req.userModel === "Doctor") {
+  //   console.log(req.userModel);
+  //   req.params.id = req.doctor.id;
+  //   next();
+  // }
 };
 
 exports.updateMe = (Model) =>
@@ -269,6 +269,6 @@ exports.deleteMe = (Model) =>
     });
   });
 
-exports.homePage = (req, res) => {
-  res.send("Welcome to the homepage!");
-};
+// exports.homePage = (req, res) => {
+//   res.send("Welcome to the homepage!");
+// };
