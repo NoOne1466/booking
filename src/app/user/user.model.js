@@ -1,9 +1,9 @@
-const UserSchema = require("./user.schema");
+const User = require("./user.schema");
 
 class User {
   static async getAll() {
-    const doc = await UserSchema.find();
-    console.log(doc);
+    const doc = await User.find();
+    // console.log(doc);
   }
 }
 
