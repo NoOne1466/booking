@@ -22,7 +22,8 @@ mongoose
     serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
     socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
   })
-  .then(console.log("DB Connection"));
+  .then(console.log("DB Connection"))
+  .catch((err) => console.log("DB connection error: ", err.message));
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
