@@ -9,7 +9,8 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-const app = require(`./app.js`);
+const app = require(`./src/app/app.js`);
+const { default: axios } = require("axios");
 
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
@@ -66,3 +67,19 @@ process.on("unhandledRejection", (err) => {
 //     console.log("Client disconnected", socket.id);
 //   });
 // });
+
+// const axios = require(axios);
+// const fs = require("fs");
+// // const x = require("./src/app");
+
+// const data = JSON.parse(
+//   fs.readFileSync("./src/app/_common/airports.json", "utf8")
+// );
+// for (const el in data) {
+//   const x = data[el].state.toLowerCase();
+
+//   if (x === "cairo") {
+//     console.log(data[el]);
+//   }
+// }
+// console.log(data);
