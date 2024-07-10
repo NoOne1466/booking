@@ -11,6 +11,7 @@ const AppError = require("../utils/appError");
 const fs = require("fs");
 
 exports.webhook = catchAsync(async (req, res, next) => {
+  console.log("paymob");
   const paymobAns = req.body;
   const hmac = req.query.hmac;
 
@@ -24,7 +25,6 @@ exports.webhook = catchAsync(async (req, res, next) => {
       status: "success",
     });
   }
-  console.log("paymob");
   console.log(JSON.stringify(paymobAns));
 
   if (paymobAns.obj.success !== true)
