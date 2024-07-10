@@ -1,21 +1,17 @@
-const catchAsync = require("../utils/catchAsync");
-const factory = require("./../_common/handlerFactory");
-const bookingRoomModel = require("./bookingRoom.model");
+const Ticket = require("./bookingFlight.model");
 const { PaymentGateway, paymobAPI } = require("../services/PaymentGetaway.js");
 const AppError = require("../utils/appError.js");
 
-exports.bookRoom = catchAsync(async (req, res, next) => {
-  const { hotelId, roomType, startDate, endDate } = req.body;
-  const booked = await bookingRoomModel.bookRoom(
-    hotelId,
-    roomType,
-    startDate,
-    endDate,
-    req.user.id
-  );
-  console.log("booked ==> ", booked);
-  if (!booked)
-    return next(new AppError("there was an error booking the room", 401));
+const catch1Async = require("./../utils/catchAsync");
+exports.createTicket = catch1Async(async (req, res, next) => {
+  const tickedBooked = await Ticket.bookTicket(req, next);
+  if (!tickedBooked)
+    return next(
+      new AppError(
+        "There was an error while booking the ticket try again later",
+        401
+      )
+    );
 
   const paymentGateway = new PaymentGateway(
     paymobAPI,
@@ -25,13 +21,14 @@ exports.bookRoom = catchAsync(async (req, res, next) => {
   await paymentGateway.getToken();
 
   const paymobOrder = await paymentGateway.createOrder({
-    id: booked._id,
-    priceInCents: booked.priceInCents,
-    name: "hotel",
+    id: tickedBooked._id,
+    priceInCents: tickedBooked.priceInCents,
+    name: "flight",
     description: "accommodation",
   });
 
-  console.log(req.user);
+  // console.log(req.user);
+
   const paymentToken = await paymentGateway.createPaymentGateway({
     uEmail: req.user.email,
     uFirstName: req.user.firstName,
@@ -39,14 +36,13 @@ exports.bookRoom = catchAsync(async (req, res, next) => {
     uPhoneNumber: req.user.phoneNumber,
   });
 
-  booked.orderId = paymobOrder.id;
-  console.log(booked);
+  tickedBooked.orderId = paymobOrder.id;
 
   const paymentURL = process.env.IFRAME_URL.replace("{{TOKEN}}", paymentToken);
 
-  res.status(200).json({
+  res.status(201).json({
     status: "success",
-    data: booked,
+    tickedBooked,
     paymentGateway: paymentURL,
   });
 });

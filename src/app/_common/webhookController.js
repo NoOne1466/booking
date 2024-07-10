@@ -3,6 +3,8 @@ const { PaymentGateway, paymobAPI } = require("../services/PaymentGetaway.js");
 const Booking = require("./../bookingRoom/bookingRoom.schema.js");
 const OrderRoom = require("./../bookingRoom/bookingRoomOrder.schema.js");
 
+const Ticket = require("./../bookingFlight/bookingFlight.schema.js");
+
 const catchAsync = require("../utils/catchAsync.js");
 const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");

@@ -68,7 +68,7 @@ exports.updateOne = (Model) =>
     });
   });
 
-exports.createOne = (Model, req, res, next) =>
+exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // req.body.user = req.model.id;
     console.log("body", req.body);

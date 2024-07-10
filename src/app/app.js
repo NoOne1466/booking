@@ -102,12 +102,14 @@ const hotelsRouter = require("./hotels/hotels.routes");
 const bookingRouter = require("./bookingRoom/bookingRoom.routes");
 const PlaneRouter = require("./planes/planes.routes");
 const flightRouter = require("./flights/flight.routes");
+const flightTikcetRouter = require("./bookingFlight/bookingFlight.routes");
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/booking", bookingRouter);
 app.use("/api/v1/plane", PlaneRouter);
 app.use("/api/v1/flight", flightRouter);
+app.use("/api/v1/flightTicket", flightTikcetRouter);
 
 const updateRoomAvailability = require("./services/cron");
 updateRoomAvailability();
