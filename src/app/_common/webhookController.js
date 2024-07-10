@@ -48,7 +48,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
   console.log(order, JSON.stringify(order));
 
   if (order) {
-    const Booking = await Booking.create({
+    const booking = await Booking.create({
       user: order.user,
       hotel: order.hotel,
       roomType: order.roomType,
@@ -56,7 +56,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       endDate: order.endDate,
       price: order.priceInCents / 100,
     });
-    await Booking.save();
+    await booking.save();
     return res.status(200).json({
       status: "success",
     });
