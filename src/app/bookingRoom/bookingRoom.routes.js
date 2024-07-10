@@ -4,10 +4,9 @@ const authController = require("../midllewares/authController");
 const webhookController = require("../_common/webhookController");
 
 const router = express.Router();
-router.use(authController.protect);
-
-router.post("/", bookingRoomController.bookRoom);
 router.route("/webhook").post(webhookController.webhook);
-router.route("/webhook").post(webhookController.test);
+
+router.use(authController.protect);
+router.post("/", bookingRoomController.bookRoom);
 
 module.exports = router;

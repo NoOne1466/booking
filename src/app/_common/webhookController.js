@@ -47,7 +47,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
   );
 
   if (order) {
-    const Booking = new Booking({
+    const Booking = await Booking.create({
       user: order.user,
       hotel: order.hotel,
       roomType: order.roomType,
@@ -69,7 +69,3 @@ exports.webhook = catchAsync(async (req, res, next) => {
   //   status: "success",
   // });
 });
-
-exports.test = function () {
-  console.log("test test test");
-};
