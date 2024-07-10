@@ -69,3 +69,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
   //   status: "success",
   // });
 });
+
+exports.test = function () {
+  console.log("test test test");
+};

@@ -8,5 +8,6 @@ router.use(authController.protect);
 
 router.post("/", bookingRoomController.bookRoom);
 router.route("/webhook").post(webhookController.webhook);
+router.route("/webhook").post(webhookController.test);
 
 module.exports = router;
