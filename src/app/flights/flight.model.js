@@ -4,7 +4,7 @@ const factory = require("./../_common/handlerFactory");
 const fs = require("fs");
 const AppError = require("../utils/appError");
 const data = JSON.parse(
-  fs.readFileSync("/home/hamza/Tickets/src/app/_common/airports.json", "utf8")
+  fs.readFileSync("src/app/_common/airports.json", "utf8")
 );
 
 class FlightModel {
