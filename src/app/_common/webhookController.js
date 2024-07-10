@@ -45,6 +45,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       runValidators: true,
     }
   );
+  console.log(order, JSON.stringify(order));
 
   if (order) {
     const Booking = await Booking.create({
