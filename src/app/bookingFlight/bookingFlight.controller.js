@@ -4,14 +4,16 @@ const AppError = require("../utils/appError.js");
 
 const catch1Async = require("./../utils/catchAsync");
 exports.createTicket = catch1Async(async (req, res, next) => {
-  const tickedBooked = await Ticket.bookTicket(req, next);
-  if (!tickedBooked)
+  const ticketBooked = await Ticket.bookTicket(req, next);
+  if (!ticketBooked)
     return next(
       new AppError(
         "There was an error while booking the ticket try again later",
         401
       )
     );
+
+  console.log(ticketBooked);
 
   const paymentGateway = new PaymentGateway(
     paymobAPI,
@@ -21,8 +23,10 @@ exports.createTicket = catch1Async(async (req, res, next) => {
   await paymentGateway.getToken();
 
   const paymobOrder = await paymentGateway.createOrder({
-    id: tickedBooked._id,
-    priceInCents: tickedBooked.priceInCents,
+    id: ticketBooked?.roundTripOrder?._id || ticketBooked?.oneWayOrder?._id,
+    priceInCents:
+      ticketBooked?.roundTripOrder?.priceInCents ||
+      ticketBooked?.oneWayOrder?.priceInCents,
     name: "flight",
     description: "accommodation",
   });
@@ -36,13 +40,17 @@ exports.createTicket = catch1Async(async (req, res, next) => {
     uPhoneNumber: req.user.phoneNumber,
   });
 
-  tickedBooked.orderId = paymobOrder.id;
+  if (ticketBooked.roundTripOrder) {
+    ticketBooked.roundTripOrder.orderId = paymobOrder.id;
+  } else {
+    ticketBooked.oneWayOrder.orderId = paymobOrder.id;
+  }
 
   const paymentURL = process.env.IFRAME_URL.replace("{{TOKEN}}", paymentToken);
 
   res.status(201).json({
     status: "success",
-    tickedBooked,
+    // ticketBooked,
     paymentGateway: paymentURL,
   });
 });

@@ -3,7 +3,10 @@ const { PaymentGateway, paymobAPI } = require("../services/PaymentGetaway.js");
 const Booking = require("./../bookingRoom/bookingRoom.schema.js");
 const OrderRoom = require("./../bookingRoom/bookingRoomOrder.schema.js");
 
-const Ticket = require("./../bookingFlight/bookingFlight.schema.js");
+const OneWayOrder = require("../bookingFlight/oneWayOrder.schema.js");
+const RoundTripOrder = require("../bookingFlight/roundTripOrder.schema");
+const OneWayTicket = require("../bookingFlight/oneWayTicket.schema")``;
+const RoundTripTicket = require("../bookingFlight/roundTripTicket.schema.js");
 
 const catchAsync = require("../utils/catchAsync.js");
 const APIFeatures = require("../utils/apiFeatures");
@@ -45,7 +48,6 @@ exports.webhook = catchAsync(async (req, res, next) => {
       runValidators: true,
     }
   );
-  console.log(order, JSON.stringify(order));
 
   if (order) {
     const booking = await Booking.create({
@@ -57,6 +59,60 @@ exports.webhook = catchAsync(async (req, res, next) => {
       price: order.priceInCents / 100,
     });
     await booking.save();
+    return res.status(200).json({
+      status: "success",
+    });
+  }
+
+  // one way payment
+  order = await OneWayOrder.findByIdAndUpdate(
+    orderId,
+    {
+      isPaid: true,
+      transactionId: paymobAns?.obj?.id,
+      paidAt: Date.now(),
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  if (order) {
+    const ticket = await OneWayTicket.create({
+      user: order.user,
+      hotel: order.hotel,
+      roomType: order.roomType,
+      startDate: order.startDate,
+      endDate: order.endDate,
+      price: order.priceInCents / 100,
+    });
+    await ticket.save();
+
+    // round trip payment
+    order = await RoundTripOrder.findByIdAndUpdate(
+      orderId,
+      {
+        isPaid: true,
+        transactionId: paymobAns?.obj?.id,
+        paidAt: Date.now(),
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  }
+  if (order) {
+    const ticket = await RoundTripTicket.create({
+      user: order.user,
+      hotel: order.hotel,
+      roomType: order.roomType,
+      startDate: order.startDate,
+      endDate: order.endDate,
+      price: order.priceInCents / 100,
+    });
+    await ticket.save();
+
     return res.status(200).json({
       status: "success",
     });

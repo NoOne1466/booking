@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderFlightSchema = new mongoose.Schema({
+const orderOneWaytSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -13,14 +13,15 @@ const orderFlightSchema = new mongoose.Schema({
   },
   seatClass: {
     type: String,
+    enum: ["economy", "business", "firstClass"],
     required: true,
   },
-  priceInCents: { type: Number, required: true },
-  isPaid: { type: Boolean, required: true, default: false },
   departureDate: {
     type: Date,
     required: true,
   },
+  priceInCents: { type: Number, required: true },
+  isPaid: { type: Boolean, required: true, default: false },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -31,6 +32,6 @@ const orderFlightSchema = new mongoose.Schema({
   transactionId: { type: String },
 });
 
-const OrderFlight = mongoose.model("OrderFlight", orderFlightSchema);
+const oneWayOrder = mongoose.model("OneWayOrder", orderOneWaytSchema);
 
-module.exports = OrderFlight;
+module.exports = oneWayOrder;
