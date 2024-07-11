@@ -13,7 +13,8 @@ exports.createTicket = catch1Async(async (req, res, next) => {
       )
     );
 
-  console.log(ticketBooked);
+  // console.log(ticketBooked);
+  // console.log(ticketBooked.roundTriporder.priceInCents);
 
   const paymentGateway = new PaymentGateway(
     paymobAPI,
@@ -21,7 +22,6 @@ exports.createTicket = catch1Async(async (req, res, next) => {
     process.env.INTEGRATION_ID
   );
   await paymentGateway.getToken();
-
   const paymobOrder = await paymentGateway.createOrder({
     id: ticketBooked?.roundTripOrder?._id || ticketBooked?.oneWayOrder?._id,
     priceInCents:

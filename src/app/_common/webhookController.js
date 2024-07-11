@@ -85,7 +85,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       user: order.user,
       flight: order.flight,
       departureDate: order.departureDate,
-      startDate: order.startDate,
+      seatClass: order.seatClass,
       price: order.priceInCents / 100,
     });
     await oneWayTicket.save();

@@ -76,7 +76,7 @@ class Ticket {
       req.body.returnPrice = returnFlight.prices[req.body.seatClass];
 
       // Create a round-trip ticket
-      const roundTriporder = await RoundTripOrder.create({
+      const roundTripOrder = await RoundTripOrder.create({
         user: req.user.id,
         outboundFlight: req.body.flight,
         returnFlight: returnFlight._id,
@@ -87,7 +87,7 @@ class Ticket {
         priceInCents: (req.body.price + req.body.returnPrice) * 100,
       });
 
-      return { roundTriporder };
+      return { roundTripOrder };
     }
   }
   static async getAllTickets() {
