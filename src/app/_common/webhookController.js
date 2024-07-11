@@ -77,8 +77,9 @@ exports.webhook = catchAsync(async (req, res, next) => {
       runValidators: true,
     }
   );
+  console.log(order);
   if (order) {
-    const ticket = await OneWayTicket.create({
+    const oneWayTicket = await OneWayTicket.create({
       user: order.user,
       hotel: order.hotel,
       roomType: order.roomType,
@@ -86,22 +87,28 @@ exports.webhook = catchAsync(async (req, res, next) => {
       endDate: order.endDate,
       price: order.priceInCents / 100,
     });
-    await ticket.save();
+    await oneWayTicket.save();
 
-    // round trip payment
-    order = await RoundTripOrder.findByIdAndUpdate(
-      orderId,
-      {
-        isPaid: true,
-        transactionId: paymobAns?.obj?.id,
-        paidAt: Date.now(),
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    return res.status(200).json({
+      status: "success",
+      order,
+    });
   }
+  // round trip payment
+  order = await RoundTripOrder.findByIdAndUpdate(
+    orderId,
+    {
+      isPaid: true,
+      transactionId: paymobAns?.obj?.id,
+      paidAt: Date.now(),
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  console.log(order);
+
   if (order) {
     const ticket = await RoundTripTicket.create({
       user: order.user,
@@ -115,6 +122,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
 
     return res.status(200).json({
       status: "success",
+      order,
     });
   }
 
@@ -122,7 +130,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
     return next(new AppError("Order not found", 404));
   }
 
-  // return res.status(200).json({
-  //   status: "success",
-  // });
+  return res.status(200).json({
+    status: "success",
+  });
 });
