@@ -50,6 +50,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
   );
 
   if (order) {
+    console.log("in hotel");
     const booking = await Booking.create({
       user: order.user,
       hotel: order.hotel,
@@ -79,6 +80,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
   );
   console.log(order);
   if (order) {
+    console.log("in one way");
     const oneWayTicket = await OneWayTicket.create({
       user: order.user,
       flight: order.flight,
@@ -87,6 +89,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       price: order.priceInCents / 100,
     });
     await oneWayTicket.save();
+    console.log(oneWayTicket);
 
     return res.status(200).json({
       status: "success",
@@ -109,7 +112,8 @@ exports.webhook = catchAsync(async (req, res, next) => {
   console.log(order);
 
   if (order) {
-    const ticket = await RoundTripTicket.create({
+    console.log("in round trip");
+    const roundTripTicket = await RoundTripTicket.create({
       user: order.user,
       outboundFlight: order.outboundFlight,
       returnFlight: order.returnFlight,
@@ -118,8 +122,8 @@ exports.webhook = catchAsync(async (req, res, next) => {
       returnDate: order.returnDate,
       price: order.priceInCents / 100,
     });
-    await ticket.save();
-
+    await roundTripTicket.save();
+    console.log(roundTripTicket);
     return res.status(200).json({
       status: "success",
       order,
