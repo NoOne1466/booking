@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ticketSchema = new mongoose.Schema({
+const oneWayTicketSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -11,11 +11,11 @@ const ticketSchema = new mongoose.Schema({
     ref: "Flight",
     required: true,
   },
-  plane: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Plane",
-    required: true,
-  },
+  // plane: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Plane",
+  //   required: true,
+  // },
   seatClass: {
     type: String,
     required: true,
@@ -30,6 +30,6 @@ const ticketSchema = new mongoose.Schema({
   },
 });
 
-const Ticket = mongoose.model("Ticket", ticketSchema);
+const OneWayTicket = mongoose.model("OneWayTicket", oneWayTicketSchema);
 
-module.exports = Ticket;
+module.exports = OneWayTicket;

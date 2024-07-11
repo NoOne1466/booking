@@ -16,11 +16,11 @@ const roundTripTicketSchema = new mongoose.Schema({
     ref: "Flight",
     required: true,
   },
-  plane: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Plane",
-    required: true,
-  },
+  // plane: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Plane",
+  //   required: true,
+  // },
   seatClass: {
     type: String,
     required: true,

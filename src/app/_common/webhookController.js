@@ -81,10 +81,9 @@ exports.webhook = catchAsync(async (req, res, next) => {
   if (order) {
     const oneWayTicket = await OneWayTicket.create({
       user: order.user,
-      hotel: order.hotel,
-      roomType: order.roomType,
+      flight: order.flight,
+      departureDate: order.departureDate,
       startDate: order.startDate,
-      endDate: order.endDate,
       price: order.priceInCents / 100,
     });
     await oneWayTicket.save();
@@ -112,10 +111,11 @@ exports.webhook = catchAsync(async (req, res, next) => {
   if (order) {
     const ticket = await RoundTripTicket.create({
       user: order.user,
-      hotel: order.hotel,
-      roomType: order.roomType,
-      startDate: order.startDate,
-      endDate: order.endDate,
+      outboundFlight: order.outboundFlight,
+      returnFlight: order.returnFlight,
+      seatClass: order.seatClass,
+      outboundDate: order.outboundDate,
+      returnDate: order.returnDate,
       price: order.priceInCents / 100,
     });
     await ticket.save();
