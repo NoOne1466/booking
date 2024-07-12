@@ -28,6 +28,11 @@ const oneWayTicketSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["accepted", "canceled", "completed"],
+  },
+  cancellationReason: String,
 });
 
 const OneWayTicket = mongoose.model("OneWayTicket", oneWayTicketSchema);

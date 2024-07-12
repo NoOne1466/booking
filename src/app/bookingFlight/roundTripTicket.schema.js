@@ -37,6 +37,10 @@ const roundTripTicketSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ["accepted", "canceled", "completed"],
+  },
 });
 
 const RoundTripTicket = mongoose.model(

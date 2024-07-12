@@ -90,6 +90,46 @@ class Ticket {
       return { roundTripOrder };
     }
   }
+  static async refund(req, next) {
+    let order = null;
+    let ticket = await OneWayTicket.findById(req.body.ticketId);
+    if (ticket) {
+      ticket.status = "canceled";
+      ticket.cancellationReason = req.body.cancellationReason;
+      await ticket.save();
+
+      order = await OneWayOrder.findOne({
+        user: ticket.user,
+        flight: ticket.flight,
+        seatClass: ticket.seatClass,
+        departureDate: ticket.departureDate,
+        isPaid: true,
+      });
+      console.log("One way ticket", ticket);
+      console.log("order", order);
+
+      return order;
+    }
+    ticket = await RoundTripTicket.findById(req.body.ticketId);
+    if (ticket) {
+      ticket.status = "canceled";
+      ticket.cancellationReason = req.body.cancellationReason;
+      await ticket.save();
+      order = await RoundTripOrder.findOne({
+        user: ticket.user,
+        outboundFlight: ticket.outboundFlight,
+        returnFlight: ticket.returnFlight,
+        seatClass: ticket.seatClass,
+        outboundDate: ticket.outboundDate,
+        returnDate: ticket.returnDate,
+        isPaid: true,
+      });
+      console.log("round trip ticket", ticket);
+      console.log("order", order);
+      return order;
+    }
+    return next(new AppError("The id provided is not related to a ticket"));
+  }
   static async getAllTickets() {
     const oneWayTickets = await OneWayTicket.find().lean().exec();
     const roundTripTickets = await RoundTripTicket.find().lean().exec();
@@ -103,10 +143,27 @@ class Ticket {
       (a, b) => new Date(a.departureDate) - new Date(b.departureDate)
     );
 
-    res.status(200).json({
-      status: "success",
-      tickets,
-    });
+    return tickets;
+  }
+  static async getAllTicketsForCurrentUser(req) {
+    const userId = req.user._id;
+    const oneWayTickets = await OneWayTicket.find({ user: userId })
+      .lean()
+      .exec();
+    const roundTripTickets = await RoundTripTicket.find({ user: userId })
+      .lean()
+      .exec();
+
+    const tickets = [
+      ...oneWayTickets.map((ticket) => ({ ...ticket, type: "one-way" })),
+      ...roundTripTickets.map((ticket) => ({ ...ticket, type: "round-trip" })),
+    ];
+
+    tickets.sort(
+      (a, b) => new Date(a.departureDate) - new Date(b.departureDate)
+    );
+
+    return tickets;
   }
 }
 

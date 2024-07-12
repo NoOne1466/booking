@@ -87,6 +87,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       departureDate: order.departureDate,
       seatClass: order.seatClass,
       price: order.priceInCents / 100,
+      status: "accepted",
     });
     await oneWayTicket.save();
     console.log(oneWayTicket);
@@ -121,6 +122,7 @@ exports.webhook = catchAsync(async (req, res, next) => {
       outboundDate: order.outboundDate,
       returnDate: order.returnDate,
       price: order.priceInCents / 100,
+      status: "accepted",
     });
     await roundTripTicket.save();
     console.log(roundTripTicket);

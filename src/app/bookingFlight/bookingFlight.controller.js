@@ -2,8 +2,8 @@ const Ticket = require("./bookingFlight.model");
 const { PaymentGateway, paymobAPI } = require("../services/PaymentGetaway.js");
 const AppError = require("../utils/appError.js");
 
-const catch1Async = require("./../utils/catchAsync");
-exports.createTicket = catch1Async(async (req, res, next) => {
+const catchAsync = require("./../utils/catchAsync");
+exports.createTicket = catchAsync(async (req, res, next) => {
   const ticketBooked = await Ticket.bookTicket(req, next);
   if (!ticketBooked)
     return next(
@@ -52,5 +52,49 @@ exports.createTicket = catch1Async(async (req, res, next) => {
     status: "success",
     // ticketBooked,
     paymentGateway: paymentURL,
+  });
+});
+
+exports.refund = catchAsync(async (req, res, next) => {
+  const order = await Ticket.refund(req, next);
+  console.log(order);
+
+  const paymentGateway = new PaymentGateway(
+    paymobAPI,
+    process.env.API_KEY,
+    process.env.INTEGRATION_ID
+  );
+
+  await paymentGateway.getToken();
+
+  const refund = await paymentGateway.createRufund(
+    order.transactionId,
+    order.priceInCents
+  );
+
+  order.isPaid = false;
+  order.refundedAt = Date.now();
+  await order.save();
+
+  res.status(200).json({
+    status: "Appointment cancelled and refund processed successfully",
+    // data: refund,
+  });
+});
+
+exports.getAllTickets = catchAsync(async (req, res, next) => {
+  const tickets = await Ticket.getAllTickets();
+  console.log(tickets);
+  res.status(200).json({
+    status: "success",
+    tickets,
+  });
+});
+exports.getAllTicketsForCurrentUser = catchAsync(async (req, res, next) => {
+  const tickets = await Ticket.getAllTicketsForCurrentUser(req);
+  console.log(tickets);
+  res.status(200).json({
+    status: "success",
+    tickets,
   });
 });
