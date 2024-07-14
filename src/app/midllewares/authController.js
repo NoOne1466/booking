@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("./../user/user.schema");
+const Admin = require("./../admin/admin.schema");
 const generatePassword = require("./../utils/passwordGenerator");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");

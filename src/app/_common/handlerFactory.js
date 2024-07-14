@@ -193,14 +193,9 @@ exports.updateMe = (Model) =>
       "email",
       "availableSlots",
       "priceOfConsultationInCents",
-      "location",
       "dateOfBirth",
       "phoneNumber",
-      "gender",
-      "speciality",
-      "yearsOfExperience",
-      "bio",
-      "hospitals"
+      "gender"
     );
     if (req.file) filteredBody.photo = `img/${req.file.filename}`;
 

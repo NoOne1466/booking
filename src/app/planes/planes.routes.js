@@ -1,7 +1,13 @@
 const express = require("express");
 const planeController = require("./planes.controller");
-
+const authController = require("./../midllewares/authController");
 const router = express.Router();
+
+router.use(
+  authController.protect,
+  authController.restrictTo("User"),
+  authController.restrictToSuperAdmin
+);
 
 router
   .route("/")

@@ -97,6 +97,7 @@ app.head("/check", (req, res) => {
   res.status(200).send();
 });
 
+const adminRouter = require("./admin/admin.routes");
 const userRouter = require("./user/user.routes");
 const hotelsRouter = require("./hotels/hotels.routes");
 const bookingRouter = require("./bookingRoom/bookingRoom.routes");
@@ -104,6 +105,7 @@ const PlaneRouter = require("./planes/planes.routes");
 const flightRouter = require("./flights/flight.routes");
 const flightTikcetRouter = require("./bookingFlight/bookingFlight.routes");
 
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/hotels", hotelsRouter);
 app.use("/api/v1/booking", bookingRouter);
