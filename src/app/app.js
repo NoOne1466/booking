@@ -33,8 +33,8 @@ app.use(passport.session());
 
 //
 
-app.use(express.static(path.join(__dirname, "public")));
-
+app.use(express.static(path.join(__dirname, "_common")));
+console.log(__dirname);
 // app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
