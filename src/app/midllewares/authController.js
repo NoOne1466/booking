@@ -172,17 +172,17 @@ exports.forgotPassword = (Model) =>
     if (!user) {
       return next(new AppError("There is no user with email address.", 404));
     }
-    console.log(user);
+    console.log("user ", user);
     // 2) Generate the random reset token
     const OTP = user.createPasswordResetToken();
     console.log(OTP);
     await user.save({ validateBeforeSave: false });
-    console.log(user);
+    // console.log(user);
 
     // 3) Send it to user's email
 
     const message = `Forgot your password? Use this OTP ${OTP} to change it if you did not forgot your password, please ignore this email!`;
-    console.log(message);
+    console.log("message ", message);
     try {
       await sendEmail({
         email: user.email,
@@ -195,7 +195,7 @@ exports.forgotPassword = (Model) =>
         message: "Token sent to email!",
       });
     } catch (err) {
-      console.log(err);
+      console.log("error ", err);
       user.passwordResetToken = undefined;
       user.passwordResetOtp = undefined;
       user.passwordResetExpires = undefined;

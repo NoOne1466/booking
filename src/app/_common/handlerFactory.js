@@ -5,7 +5,7 @@ const multer = require("multer");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/img");
+    cb(null, "src/app/_common/img");
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split("/")[1];
@@ -51,7 +51,30 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    // const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
+
+    const filteredBody = filterObj(
+      req.body,
+      "firstName",
+      "lastName",
+      "email",
+      "dateOfBirth",
+      "phoneNumber",
+      "gender",
+      "type",
+      "price",
+      "totalRooms",
+      "availableRooms",
+      "description",
+      "image"
+    );
+    if (req.file) req.body.image = `img/${req.file.filename}`;
+
+    console.log("body", req.body);
+    const doc = await Model.findByIdAndUpdate(req.params.id, filteredBody, {
       new: true,
       runValidators: true,
     });
@@ -191,33 +214,11 @@ exports.updateMe = (Model) =>
       "firstName",
       "lastName",
       "email",
-      "availableSlots",
-      "priceOfConsultationInCents",
       "dateOfBirth",
       "phoneNumber",
       "gender"
     );
     if (req.file) filteredBody.photo = `img/${req.file.filename}`;
-
-    // Validate and update hospitals
-    if (req.body.hospitals && Model.modelName == "Doctor") {
-      console.log(req.body.hospitals);
-      const hospitals = req.body.hospitals;
-      const hospitalRecords = await Hospital.find({
-        _id: { $in: hospitals },
-      });
-
-      if (hospitalRecords.length !== hospitals.length) {
-        return next(
-          new AppError(
-            "One or more hospitals provided do not exist in the database",
-            400
-          )
-        );
-      }
-
-      filteredBody.hospitals = hospitals;
-    }
 
     // 3) Update user document
     // console.log(req.model);
