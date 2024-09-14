@@ -4,16 +4,27 @@ const authController = require("./../midllewares/authController");
 
 const router = express.Router();
 
-router.use(authController.protect);
 router
   .route("/")
   .get(hotelController.getAllHotels)
-  .post(authController.restrictToSuperAdmin, hotelController.createHotels);
+  .post(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    hotelController.createHotels
+  );
 
 router
   .route("/:id")
   .get(hotelController.getHotel)
-  .patch(authController.restrictToSuperAdmin, hotelController.updateHotels)
-  .delete(authController.restrictToSuperAdmin, hotelController.deleteHotels);
+  .patch(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    hotelController.updateHotels
+  )
+  .delete(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    hotelController.deleteHotels
+  );
 
 module.exports = router;
