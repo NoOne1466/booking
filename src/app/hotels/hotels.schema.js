@@ -25,9 +25,14 @@ const roomTypeSchema = new mongoose.Schema({
 
 const hotelsSchema = new mongoose.Schema(
   {
-    image: {
+    hotelName: {
+      type: String,
+      required: true,
+    },
+
+    images: {
       type: [String],
-      default: "hotel.png",
+      // default: "hotel.png",
     },
     country: String,
     address: String,

@@ -2,6 +2,8 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const APIFeatures = require("./../utils/apiFeatures");
 const multer = require("multer");
+const sharp = require("sharp");
+const fs = require("fs");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -21,7 +23,39 @@ const multerFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadPhoto = upload.single("photo");
-exports.uploadArrayOfPhotos = upload.array("photo", 10);
+
+exports.uploadArrayOfPhotos = upload.fields([
+  { name: "imageCover", maxCount: 1 },
+  { name: "images", maxCount: 20 },
+]);
+
+exports.resizeImages = catchAsync(async (req, res, next) => {
+  console.log(req.files);
+
+  req.body.images = [];
+  // console.log(req.body);
+
+  // console.log(req.files.images);
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      console.log("x");
+      const filename = `user-${req.model.id}-${Date.now()}-${i + 1}.jpeg`;
+      console.log(filename);
+      console.log("buffer", file);
+      const buffer = await fs.promises.readFile(file.path);
+
+      await sharp(buffer)
+        .resize(500, 500)
+        .toFormat("jpeg")
+        .jpeg({ quality: 90 })
+        .toFile(`src/app/_common/img/${filename}`);
+      console.log("in loop", req.body);
+      req.body.images.push(filename);
+    })
+  );
+  console.log("ended", req.body);
+  next();
+});
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -69,7 +103,8 @@ exports.updateOne = (Model) =>
       "totalRooms",
       "availableRooms",
       "description",
-      "image"
+      "image",
+      "images"
     );
     if (req.file) req.body.image = `img/${req.file.filename}`;
 

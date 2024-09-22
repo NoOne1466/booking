@@ -1,6 +1,7 @@
 const express = require("express");
 const hotelController = require("./hotels.controller");
 const authController = require("./../midllewares/authController");
+const handlerFactory = require("./../_common/handlerFactory");
 
 const router = express.Router();
 
@@ -19,6 +20,8 @@ router
   .patch(
     authController.protect,
     authController.restrictToSuperAdmin,
+    handlerFactory.uploadArrayOfPhotos,
+    handlerFactory.resizeImages,
     hotelController.updateHotels
   )
   .delete(
