@@ -154,25 +154,21 @@ exports.getOne = (Model, popOptions) =>
     if (popOptions) query = query.populate(popOptions);
 
     let doc = await query;
+    // console.log(doc);
+    // Handle special case for Flight model to populate reviews
+    if (Model.modelName == "Flight") {
+      // console.log("flight");
 
-    console.log(Model.modelName);
-    let newSplit = [];
-    if (Model.modelName == "Doctor") {
-      console.log(doc.splitAvailableSlots);
-      for (const slot of doc.splitAvailableSlots) {
-        const temp = await Order.findOne({
-          isPaid: true,
-          startTime: slot.slotTime,
-          endTime: slot.endTime,
-        });
-        console.log("slot", temp);
-        if (!temp) {
-          console.log("no temp pushing");
-          newSplit.push(slot);
-        }
-      }
+      doc = await doc.populate({
+        path: "reviews",
+        select: "review rating user",
+        populate: {
+          path: "user",
+          select: "name",
+        },
+      });
     }
-    // console.log("available ", newSplit);
+
     if (!doc) {
       return next(new AppError("No document found with that ID", 404));
     }
@@ -181,7 +177,6 @@ exports.getOne = (Model, popOptions) =>
       status: "success",
       data: {
         data: doc,
-        onlyFreeSlots: newSplit,
       },
     });
   });

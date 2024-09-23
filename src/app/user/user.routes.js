@@ -4,7 +4,7 @@ const userController = require("./user.controller");
 const authController = require("./../midllewares/authController");
 const router = express.Router();
 const factory = require("./../_common/handlerFactory");
-
+const favouriteController = require("./../favourtieHotels/favouriteHotels.controller");
 router.get("/", userController.getAllUsers);
 
 router.post("/signup", authController.signup(User));
@@ -42,5 +42,20 @@ router
     userController.createUser,
     userController.deleteUser
   );
+
+/// favs
+
+// Favorites routes
+router
+  .route("/favourites/hotels")
+  .get(favouriteController.getAllFavoritesHotels);
+
+router
+  .route("/favourites/add-hotel-to-favorites")
+  .post(favouriteController.addToFavorites);
+
+router
+  .route("/favourites/remove-hotel-from-favorites")
+  .delete(favouriteController.removeFromFavorites);
 
 module.exports = router;

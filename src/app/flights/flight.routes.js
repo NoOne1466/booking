@@ -4,16 +4,28 @@ const authController = require("./../midllewares/authController");
 
 const router = express.Router();
 
-router.use(authController.protect);
+// router.use(authController.protect);
 router
   .route("/")
   .get(flightController.getAllFlight)
-  .post(authController.restrictToSuperAdmin, flightController.createFlight);
+  .post(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    flightController.createFlight
+  );
 
 router
   .route("/:id")
   .get(flightController.getFlight)
-  .patch(authController.restrictToSuperAdmin, flightController.updateFlight)
-  .delete(authController.restrictToSuperAdmin, flightController.deleteFlight);
+  .patch(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    flightController.updateFlight
+  )
+  .delete(
+    authController.protect,
+    authController.restrictToSuperAdmin,
+    flightController.deleteFlight
+  );
 
 module.exports = router;
