@@ -52,7 +52,7 @@ const reviewFlightSchema = new mongoose.Schema(
 //   next();
 // });
 
-reviewFlightSchema.index({ user: 1, flight: 1 }, { unique: true });
+// reviewFlightSchema.index({ user: 1, flight: 1 }, { unique: true }); // glitched so had to do it in compass
 
 reviewFlightSchema.statics.calcAverageRatings = async function (flightId) {
   const stats = await this.aggregate([

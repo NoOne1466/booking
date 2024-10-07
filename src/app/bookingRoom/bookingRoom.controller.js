@@ -46,7 +46,7 @@ exports.bookRoom = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: booked,
+    // data: booked,
     paymentGateway: paymentURL,
   });
 });
