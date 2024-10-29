@@ -2,9 +2,14 @@ const OneWayTicket = require("./../bookingFlight/oneWayTicket.schema");
 const RoundTripTicket = require("./../bookingFlight/roundTripTicket.schema");
 const ReviewFlight = require("./reviewFlight.schema");
 const catchAsync = require("./../utils/catchAsync");
+const factory = require("./../_common/handlerFactory");
 const mongoose = require("mongoose");
 
 const AppError = require("../utils/appError");
+
+exports.getAllReviews = factory.getAll(ReviewFlight);
+// exports.createNewReview = factory.createOne(ReviewFlight);
+exports.deleteReview = factory.deleteOne(ReviewFlight);
 
 exports.createReview = catchAsync(async (req, res, next) => {
   const { rating, review } = req.body;

@@ -10,9 +10,11 @@ const router = express.Router();
 
 router.use(authController.protect);
 
-router.route("/").post(
-  flightReviewController.createReview
-  // handlerFactory.createOne(ReviewFlight)
-);
+router
+  .route("/")
+  .get(flightReviewController.getAllReviews)
+  .post(flightReviewController.createReview);
+
+router.route("/:id").delete(flightReviewController.deleteReview);
 
 module.exports = router;

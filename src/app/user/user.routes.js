@@ -48,7 +48,14 @@ router
 // Favorites routes
 router
   .route("/favourites/hotels")
-  .get(favouriteController.getAllFavoritesHotels);
+  .get(
+    authController.protect,
+    authController.restrictTo("User"),
+    favouriteController.getAllFavoritesHotels
+  );
+router
+  .route("/favourites/myFavourites")
+  .get(favouriteController.getAllFavoritesHotelsForCurrentUser);
 
 router
   .route("/favourites/add-hotel-to-favorites")
