@@ -2,6 +2,7 @@ const express = require("express");
 const hotelController = require("./hotels.controller");
 const authController = require("./../midllewares/authController");
 const handlerFactory = require("./../_common/handlerFactory");
+const Hotel = require("./hotels.schema");
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router
     authController.protect,
     authController.restrictToSuperAdmin,
     handlerFactory.uploadArrayOfPhotos,
-    handlerFactory.resizeImages,
+    handlerFactory.resizeImages(Hotel),
     hotelController.updateHotels
   )
   .delete(

@@ -29,33 +29,38 @@ exports.uploadArrayOfPhotos = upload.fields([
   { name: "images", maxCount: 20 },
 ]);
 
-exports.resizeImages = catchAsync(async (req, res, next) => {
-  console.log(req.files);
+exports.resizeImages = (Model) =>
+  catchAsync(async (req, res, next) => {
+    // console.log(req.files);
+    // console.log("id", req.params.id);
+    const doc = await Model.findById(req.params.id);
+    const { images } = doc;
+    // console.log("images");
+    // console.log(images);
 
-  req.body.images = [];
-  // console.log(req.body);
+    req.body.images = images;
+    // console.log(req.body);
 
-  // console.log(req.files.images);
-  await Promise.all(
-    req.files.images.map(async (file, i) => {
-      console.log("x");
-      const filename = `user-${req.model.id}-${Date.now()}-${i + 1}.jpeg`;
-      console.log(filename);
-      console.log("buffer", file);
-      const buffer = await fs.promises.readFile(file.path);
+    // console.log(req.files.images);
+    await Promise.all(
+      req.files.images.map(async (file, i) => {
+        const filename = `user-${req.model.id}-${Date.now()}-${i + 1}.jpeg`;
+        // console.log(filename);
+        // console.log("buffer", file);
+        const buffer = await fs.promises.readFile(file.path);
 
-      await sharp(buffer)
-        .resize(500, 500)
-        .toFormat("jpeg")
-        .jpeg({ quality: 90 })
-        .toFile(`src/app/_common/img/${filename}`);
-      console.log("in loop", req.body);
-      req.body.images.push(filename);
-    })
-  );
-  console.log("ended", req.body);
-  next();
-});
+        await sharp(buffer)
+          .resize(500, 500)
+          .toFormat("jpeg")
+          .jpeg({ quality: 90 })
+          .toFile(`src/app/_common/img/${filename}`);
+        // console.log("in loop", req.body);
+        req.body.images.push(filename);
+      })
+    );
+    // console.log("ended", req.body);
+    next();
+  });
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -106,9 +111,9 @@ exports.updateOne = (Model) =>
       "image",
       "images"
     );
-    if (req.file) req.body.image = `img/${req.file.filename}`;
+    // if (req.file) req.body.image = `img/${req.file.filename}`;
 
-    console.log("body", req.body);
+    // console.log("body", req.body);
     const doc = await Model.findByIdAndUpdate(req.params.id, filteredBody, {
       new: true,
       runValidators: true,
