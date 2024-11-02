@@ -15,6 +15,9 @@ router
   .get(flightReviewController.getAllReviews)
   .post(flightReviewController.createReview);
 
-router.route("/:id").delete(flightReviewController.deleteReview);
+router
+  .route("/:id")
+  .get(flightReviewController.getReviewsForFlight)
+  .delete(flightReviewController.deleteReview);
 
 module.exports = router;

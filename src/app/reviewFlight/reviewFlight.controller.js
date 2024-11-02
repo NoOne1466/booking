@@ -10,6 +10,15 @@ const AppError = require("../utils/appError");
 exports.getAllReviews = factory.getAll(ReviewFlight);
 // exports.createNewReview = factory.createOne(ReviewFlight);
 exports.deleteReview = factory.deleteOne(ReviewFlight);
+exports.getReviewsForFlight = catchAsync(async (req, res, next) => {
+  console.log(req.params.id);
+  const doc = await ReviewFlight.find({ flight: req.params.id });
+  console.log(doc);
+  res.status(201).json({
+    status: "success",
+    doc,
+  });
+});
 
 exports.createReview = catchAsync(async (req, res, next) => {
   const { rating, review } = req.body;
