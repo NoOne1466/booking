@@ -19,11 +19,7 @@ const contactSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: [true, "Please provide your phone number"],
-  },
-  topic: {
-    type: String,
-    required: [true, "Please provide a topic"],
+    // required: [true, "Please provide your phone number"],
   },
   message: {
     type: String,
