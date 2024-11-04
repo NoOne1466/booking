@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (options) => {
   // 1) Create a transporter
   console.log("test ");
+  console.log(options);
   console.log(process.env.EMAIL_HOST);
   console.log(process.env.EMAIL_PORT);
   console.log(process.env.EMAIL_USERNAME);
