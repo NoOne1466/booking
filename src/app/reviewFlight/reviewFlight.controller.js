@@ -24,8 +24,8 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const { rating, review } = req.body;
   const userId = req.user.id;
   const ticketId = new mongoose.Types.ObjectId(req.body.ticketId);
-  const id = new mongoose.Types.ObjectId("66f145f2aa5063bd2e1671e6");
-  console.log(id);
+  // const id = new mongoose.Types.ObjectId("66f145f2aa5063bd2e1671e6");
+  // console.log(id);
 
   // Find the ticket
   let ticket = await RoundTripTicket.findOne({ _id: ticketId });

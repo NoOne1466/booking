@@ -106,6 +106,7 @@ const flightRouter = require("./flights/flight.routes");
 const flightTikcetRouter = require("./bookingFlight/bookingFlight.routes");
 const reviewFlight = require("./reviewFlight/reviewFlight.routes");
 const contactUs = require("./contactUs/contact.routes");
+const blog = require("./blog/blog.routes");
 
 // const favouriteHotels = require("./favourtieHotels/fovouriteHotels.routes");
 
@@ -118,6 +119,7 @@ app.use("/api/v1/flight", flightRouter);
 app.use("/api/v1/flightTicket", flightTikcetRouter);
 app.use("/api/v1/reviewFlight", reviewFlight);
 app.use("/api/v1/contactus", contactUs);
+app.use("/api/v1/blog", blog);
 
 // app.use("/api/v1/favouriteHotels", favouriteHotels);
 
