@@ -7,6 +7,7 @@ const fs = require("fs");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log(req.files);
     cb(null, "src/app/_common/img");
   },
   filename: (req, file, cb) => {
@@ -23,6 +24,7 @@ const multerFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadPhoto = upload.single("photo");
+exports.uploadImage = upload.single("image");
 
 exports.uploadArrayOfPhotos = upload.fields([
   { name: "imageCover", maxCount: 1 },

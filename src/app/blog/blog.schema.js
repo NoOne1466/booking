@@ -6,15 +6,15 @@ const validator = require("validator");
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Please provide your first name"],
+    required: [true, "Please provide a title"],
   },
   description: {
     type: String,
-    required: [true, "Please provide your last name"],
+    required: [true, "Please provide a description"],
   },
   image: {
     type: String,
-    required: [true, "Please provide a message"],
+    required: [true, "Please provide an image"],
   },
   createdAt: {
     type: Date,

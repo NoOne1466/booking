@@ -6,13 +6,14 @@ const handlerFactory = require("./../_common/handlerFactory");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(blogController.getAllblogs)
-  .post(
-    handlerFactory.uploadPhoto,
-    handlerFactory.resizeImages(Blog),
-    blogController.createblog
-  );
+router.route("/").get(blogController.getAllblogs).post(
+  authController.protect,
+  authController.restrictTo("User"),
+  authController.restrictTo("Doctor"),
+  authController.restrictToSuperAdmin,
+  handlerFactory.uploadImage,
+  // handlerFactory.resizeImages(Blog),
+  blogController.createblog
+);
 
 module.exports = router;
