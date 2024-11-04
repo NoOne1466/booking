@@ -12,9 +12,9 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a description"],
   },
-  image: {
+  photo: {
     type: String,
-    required: [true, "Please provide an image"],
+    required: [true, "Please provide a photo"],
   },
   createdAt: {
     type: Date,

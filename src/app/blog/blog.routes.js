@@ -11,7 +11,7 @@ router.route("/").get(blogController.getAllblogs).post(
   authController.restrictTo("User"),
   authController.restrictTo("Doctor"),
   authController.restrictToSuperAdmin,
-  handlerFactory.uploadImage,
+  handlerFactory.uploadPhoto,
   // handlerFactory.resizeImages(Blog),
   blogController.createblog
 );

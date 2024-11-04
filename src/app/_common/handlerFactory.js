@@ -24,7 +24,6 @@ const multerFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadPhoto = upload.single("photo");
-exports.uploadImage = upload.single("image");
 
 exports.uploadArrayOfPhotos = upload.fields([
   { name: "imageCover", maxCount: 1 },
