@@ -68,24 +68,40 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = (Model) =>
   catchAsync(async (req, res, next) => {
-    const newUser = await Model.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-      medicalId: req.body.medicalId,
-      availableSlots: req.body.availableSlots,
-      hospitals: req.body.hospitals,
-      phoneNumber: req.body.phoneNumber,
-      gender: req.body.gender,
-      speciality: req.body.speciality,
-      yearsOfExperience: req.body.yearsOfExperience,
-      location: req.body.location,
-      dateOfBirth: req.body.dateOfBirth,
-    });
-
-    createSendToken(newUser, 201, res);
+    const { email } = req.body;
+    const user = await Model.findOne({ email }).select("+active");
+    console.log(user);
+    console.log(email);
+    if (user) {
+      user.active = true;
+      console.log(user.active);
+      await user.save({ validateBeforeSave: false });
+      res.status(200).json({
+        status: "success",
+        message: "user set to active again, Welcome back!",
+        email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      });
+    } else {
+      const newUser = await Model.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        passwordConfirm: req.body.passwordConfirm,
+        medicalId: req.body.medicalId,
+        availableSlots: req.body.availableSlots,
+        hospitals: req.body.hospitals,
+        phoneNumber: req.body.phoneNumber,
+        gender: req.body.gender,
+        speciality: req.body.speciality,
+        yearsOfExperience: req.body.yearsOfExperience,
+        location: req.body.location,
+        dateOfBirth: req.body.dateOfBirth,
+      });
+      createSendToken(newUser, 201, res);
+    }
   });
 
 exports.login = (Model) =>
@@ -98,6 +114,7 @@ exports.login = (Model) =>
     }
     // 2) Check if user exists && password is correct
     const user = await Model.findOne({ email }).select("+password");
+    console.log(user);
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new AppError("Incorrect email or password", 401));
     }
